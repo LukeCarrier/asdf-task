@@ -24,7 +24,8 @@ fi
 download() {
   local -r os=$(get_os)
   local -r arch=$(get_arch)
-  local -r filename="${toolname}_${os}_${arch}.tar.gz"
+  local -r fmt=$(get_archive_fmt "$os")
+  local -r filename="${toolname}_${os}_${arch}.${fmt}"
   local -r download_url="$(get_download_url $filename)"
 
   echo "Downloading ${toolname} version ${ASDF_INSTALL_VERSION} from ${download_url}"

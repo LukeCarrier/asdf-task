@@ -19,12 +19,14 @@ readonly toolname="task"
 install() {
     local -r os=$(get_os)
     local -r arch=$(get_arch)
-    local -r filename="${toolname}_${os}_${arch}.tar.gz"
+    local -r fmt=$(get_archive_fmt $os)
+    local -r bin_ext=$(get_bin_ext $os)
+    local -r filename="${toolname}_${os}_${arch}.${fmt}"
     local -r download_pkg="${ASDF_DOWNLOAD_PATH}/${filename}"
 
-    echo "Extracting ${toolname} from tar archive"
+    echo "Extracting ${toolname} from ${fmt} archive"
     [ ! -d "${ASDF_INSTALL_PATH}/bin" ] && mkdir -p "${ASDF_INSTALL_PATH}/bin"
-    tar xf "$download_pkg" -C "${ASDF_INSTALL_PATH}/bin" "$toolname" 2>/dev/null
+    extract_archive "$fmt" "$download_pkg" "${ASDF_INSTALL_PATH}/bin" "${toolname}${bin_ext}"
     if [ $? -eq 0 ]
     then
       echo "Successfully installed ${toolname} ${ASDF_INSTALL_VERSION}"
